@@ -1,0 +1,3 @@
+{{< redivis-table >}}
+
+<!-- {{< redivis-table datapages.palmerpenguins.penguins >}} -->
