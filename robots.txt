@@ -1,1 +1,1 @@
-Sitemap: https://datapages.github.io/datapage/sitemap.xml
+Sitemap: https://datapages.github.io/project-loon/sitemap.xml
