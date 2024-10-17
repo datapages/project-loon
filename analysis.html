@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>analysis – Palmer Penguins</title>
+<title>analysis – Project Loon</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -128,11 +128,8 @@ background: var(--bs-light);
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a href="./index.html" class="navbar-brand navbar-brand-logo">
-    <img src="./images/logo.png" alt="" class="navbar-logo">
-    </a>
     <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">Palmer Penguins</span>
+    <span class="navbar-title">Project Loon</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -173,7 +170,7 @@ background: var(--bs-light);
 
 <section id="programmatic-access" class="level2">
 <h2 class="anchored" data-anchor-id="programmatic-access">Programmatic access</h2>
-<p>You can access the palmerpenguins data programmatically using the Redivis API for <a href="https://apidocs.redivis.com/client-libraries/redivis-r">R</a> or <a href="https://apidocs.redivis.com/client-libraries/redivis-python">Python</a>.</p>
+<p>You can access the project_loon data programmatically using the Redivis API for <a href="https://apidocs.redivis.com/client-libraries/redivis-r">R</a> or <a href="https://apidocs.redivis.com/client-libraries/redivis-python">Python</a>.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Python</a></li></ul>
 <div class="tab-content">
@@ -188,9 +185,9 @@ background: var(--bs-light);
 </ol>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(redivis)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>user <span class="ot">&lt;-</span> redivis<span class="sc">::</span><span class="fu">user</span>(<span class="st">"datapages"</span>)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>dataset <span class="ot">&lt;-</span> user<span class="sc">$</span><span class="fu">dataset</span>(<span class="st">"palmerpenguins"</span>)</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>table <span class="ot">&lt;-</span> dataset<span class="sc">$</span><span class="fu">table</span>(<span class="st">"penguins"</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>user <span class="ot">&lt;-</span> redivis<span class="sc">::</span><span class="fu">user</span>(<span class="st">"sdss"</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>dataset <span class="ot">&lt;-</span> user<span class="sc">$</span><span class="fu">dataset</span>(<span class="st">"project_loon"</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>table <span class="ot">&lt;-</span> dataset<span class="sc">$</span><span class="fu">table</span>(<span class="st">"loon"</span>)</span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Load table as tidyverse tibble</span></span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> table<span class="sc">$</span><span class="fu">to_tibble</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -207,9 +204,9 @@ background: var(--bs-light);
 </ol>
 <div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> redivis</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>user <span class="op">=</span> redivis.user(<span class="st">"datapages"</span>)</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>dataset <span class="op">=</span> user.dataset(<span class="st">"palmerpenguins"</span>)</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>table <span class="op">=</span> dataset.table(<span class="st">"penguins"</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>user <span class="op">=</span> redivis.user(<span class="st">"sdss"</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>dataset <span class="op">=</span> user.dataset(<span class="st">"project_loon"</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>table <span class="op">=</span> dataset.table(<span class="st">"loon"</span>)</span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Load table as a dataframe</span></span>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> table.to_pandas_dataframe()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>

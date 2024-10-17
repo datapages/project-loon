@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>about – Palmer Penguins</title>
+<title>about – Project Loon</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -93,11 +93,8 @@ background: var(--bs-light);
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a href="./index.html" class="navbar-brand navbar-brand-logo">
-    <img src="./images/logo.png" alt="" class="navbar-logo">
-    </a>
     <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">Palmer Penguins</span>
+    <span class="navbar-title">Project Loon</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -133,48 +130,49 @@ background: var(--bs-light);
 <!-- main -->
 <div class="quarto-about-trestles">
   <div class="about-entity">
-    <img src="images/lter_penguins.png" class="about-image
+    <img src="images/loon_banner.webp" class="about-image
   rounded " style="width: 100%;">
     <div class="about-links">
-  <a href="https://github.com/datapages/datapage" class="about-link" rel="" target="">
+  <a href="https://github.com/DataWaveProject/Loon-momentum-fluxes" class="about-link" rel="" target="">
     <i class="bi bi-github"></i>
      <span class="about-link-text">GitHub</span>
-  </a>
-  <a href="https://allisonhorst.github.io/palmerpenguins/" class="about-link" rel="" target="">
-    <i class="bi bi-globe"></i>
-     <span class="about-link-text">R package</span>
-  </a>
-  <a href="https://doi.org/10.1371/journal.pone.0090081" class="about-link" rel="" target="">
-    <i class="bi bi-file-text"></i>
-     <span class="about-link-text">Publication</span>
   </a>
 </div>
   </div>
   <div class="about-contents"><main class="content quarto-banner-title-block" id="quarto-document-content">
-<section id="palmerpenguins" class="level2">
-<h2 data-anchor-id="palmerpenguins">palmerpenguins</h2>
-<p>The goal of palmerpenguins is to provide a great dataset for data exploration &amp; visualization, as an alternative to <code>iris</code>.</p>
-<p>Data were collected and made available by <a href="https://www.uaf.edu/cfos/people/faculty/detail/kristen-gorman.php">Dr.&nbsp;Kristen Gorman</a> and the <a href="https://pallter.marine.rutgers.edu/">Palmer Station, Antarctica LTER</a>, a member of the <a href="https://lternet.edu/">Long Term Ecological Research Network</a>. The dataset contains data for 344 penguins. There are 3 different species of penguins in this dataset, collected from 3 islands in the Palmer Archipelago, Antarctica.</p>
-<p>Data are available by <a href="https://creativecommons.org/public-domain/cc0/">CC-0</a> license in accordance with the <a href="https://pallter.marine.rutgers.edu/data/">Palmer Station LTER Data Policy</a> and the <a href="https://lternet.edu/data-access-policy/">LTER Data Access Policy for Type I data</a>.</p>
+<section id="project-loon" class="level2">
+<h2 data-anchor-id="project-loon">Project Loon</h2>
+<section id="abstract" class="level3">
+<h3 data-anchor-id="abstract">Abstract</h3>
+<p>The purpose of this dataset is to offer an estimate of the horizontal momentum fluxed vertically by the atmospheric internal gravity waves (GWs) observed by Project Loon balloons. This vertical flux of horizontal momentum is commonly referred to as the GW momentum flux. Before estimating the GW momentum fluxes, additional processing was necessary to remove data sampling errors, irregularities, and balloon maneuvering.</p>
+</section>
+<section id="methodology" class="level3">
+<h3 data-anchor-id="methodology">Methodology</h3>
+<p>The procedures for this processing, and the subsequent analysis of the processed data, are described in Green et al.&nbsp;(2024). The Python code (in Jupyter notebooks) that was used for both is available at: <a href="https://github.com/DataWaveProject/Loon-momentum-fluxes" class="uri">https://github.com/DataWaveProject/Loon-momentum-fluxes</a>.</p>
+</section>
+<section id="usage-notes" class="level3">
+<h3 data-anchor-id="usage-notes">Usage notes</h3>
+<p>See the following sample project for examples: <a href="https://redivis.com/projects/q08b-889vc3xgg" class="uri">https://redivis.com/projects/q08b-889vc3xgg</a>.</p>
 
 
 </section>
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@article{b._gorman2014,
-  author = {B. Gorman, Kristen and D. Williams, Tony and R. Fraser,
-    William},
-  title = {Ecological Sexual Dimorphism and Environmental Variability
-    Within a Community of {Antarctic} Penguins (Genus {Pygoscelis)}},
-  journal = {PLoS ONE},
-  date = {2014},
+</section>
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@article{green2024,
+  author = {Green, Brian and Sheshadri, Aditi and Joan Alexander, M. and
+    Bramberger, Martina and Lott, François},
+  title = {Gravity Wave Momentum Fluxes Estimated from {Project} {Loon}
+    Balloon Data},
+  journal = {Journal of Geophysical Research: Atmospheres},
+  date = {2024},
   url = {https://datapages.github.io/project-loon/about.html},
-  doi = {10.1371/journal.pone.0090081},
+  doi = {10.1029/2023JD039927},
   langid = {en}
 }
-</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-b._gorman2014" class="csl-entry quarto-appendix-citeas" role="listitem">
-B. Gorman, Kristen, Tony D. Williams, and William R. Fraser. 2014.
-<span>“Ecological Sexual Dimorphism and Environmental Variability Within
-a Community of Antarctic Penguins (Genus Pygoscelis).”</span> <em>PLoS
-ONE</em>. <a href="https://doi.org/10.1371/journal.pone.0090081">https://doi.org/10.1371/journal.pone.0090081</a>.
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-green2024" class="csl-entry quarto-appendix-citeas" role="listitem">
+Green, Brian, Aditi Sheshadri, M. Joan Alexander, Martina Bramberger,
+and François Lott. 2024. <span>“Gravity Wave Momentum Fluxes Estimated
+from Project Loon Balloon Data.”</span> <em>Journal of Geophysical
+Research: Atmospheres</em>. <a href="https://doi.org/10.1029/2023JD039927">https://doi.org/10.1029/2023JD039927</a>.
 </div></div></section></div></main></div>
 </div>
  <!-- /main -->
