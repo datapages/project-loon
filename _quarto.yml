@@ -9,7 +9,7 @@ project:
 format:
   datapage-html:
     theme: theme.scss
-    mainfont: Roboto
+    mainfont: Source Sans Pro
 
 execute: 
   echo: false
