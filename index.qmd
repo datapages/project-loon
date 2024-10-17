@@ -1,19 +1,13 @@
 ---
-title: "Palmer Penguins"
-subtitle: "A great dataset for data exploration & visualization"
+title: "Project Loon"
+# subtitle: "A great dataset for data exploration & visualization"
 description: |
-  Data were collected and made available by [Dr. Kristen Gorman](https://www.uaf.edu/cfos/people/faculty/detail/kristen-gorman.php) and the [Palmer Station, Antarctica LTER](https://pallter.marine.rutgers.edu/), a member of the [Long Term Ecological Research Network](https://lternet.edu/).
+  The purpose of this dataset is to offer an estimate of the horizontal momentum fluxed vertically by the atmospheric internal gravity waves (GWs) observed by Project Loon balloons. This vertical flux of horizontal momentum is commonly referred to as the GW momentum flux. Before estimating the GW momentum fluxes, additional processing was necessary to remove data sampling errors, irregularities, and balloon maneuvering.
 ---
 
-::: {layout-ncol=2}
-![Artwork by \@allison_horst](images/lter_penguins.png)
+<!-- {{< include _load-data.qmd >}} -->
 
-![](images/culmen_depth.png)
-:::
-
-{{< include _load-data.qmd >}}
-
-{{< include _scatter_hist.qmd >}}
+<!-- {{< include _scatter_hist.qmd >}} -->
 
 <!-- {{< include _scatter.qmd >}} -->
 

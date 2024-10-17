@@ -1,14 +1,15 @@
 project:
-  title: "Palmer Penguins"
+  title: "Project Loon"
   type: datapage
 
-website:
-  navbar:
-    logo: images/logo.png
+# website:
+#   navbar:
+#     logo: images/logo.png
 
 format:
   datapage-html:
     theme: theme.scss
+    mainfont: Roboto
 
 execute: 
   echo: false
@@ -17,6 +18,6 @@ execute:
   error: false
 
 redivis:
-  user: datapages
-  dataset: palmerpenguins
-  table: penguins
+  user: sdss
+  dataset: project_loon
+  table: loon

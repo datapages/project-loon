@@ -24,7 +24,7 @@ if ("redivis" %in% names(quarto) &&
   data <- table$to_tibble()
 
   # get variable metadata
-  vars <- map(table$list_variables(), \(v) v$get(wait_for_statistics=TRUE)$properties)
+  vars <- purrr::map(table$list_variables(), \(v) v$get(wait_for_statistics=TRUE)$properties)
 
   # pass to OJS
   ojs_define(data = data)
