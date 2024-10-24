@@ -13,9 +13,7 @@ ojs_define(data = data)
 
 ```{ojs}
 import {interval} from '@mootari/range-slider' // two ended slider
-```
 
-```{ojs}
 d = transpose(data).map(d => ({ ...d, time: new Date(d.time) }))
 td = d.filter(d => d.segment_id == segment)
 
@@ -40,17 +38,42 @@ circle = d3.geoCircle().center(center).radius(radius)()
 
 viewof segment = Inputs.select(Array.from(new Set(d.map(d => d.segment_id))),
                                {label: "Segment ID"})
-viewof projection = Inputs.select(["azimuthal-equidistant", "equal-earth"],
-                                  {label: "Projection"})
+//viewof projection = Inputs.select(["azimuthal-equidistant", "equal-earth"],
+//                                  {label: "Projection"})
 ```
+
+::: {layout="[[0.5,1]]"}
 
 ```{ojs}
 world = FileAttachment("countries-110m.json").json()
 land = topojson.feature(world, world.objects.land)
 
+viewof map_world = Plot.plot({
+  style: { fontFamily: "var(--sans-serif)" },
+  projection: { type: "equal-earth" },
+  marks: [
+    //Plot.frame(),
+    Plot.sphere(),
+    Plot.graticule(),
+    Plot.geo(land, {fill: "lightgrey"}),
+    Plot.dot(td.slice(1), {
+      x: "longitude", y: "latitude",
+      r: 1, stroke: "black", strokeOpacity: 0.2,
+    }),
+    Plot.dot(td.slice(0, 1), {
+      x: "longitude", y: "latitude",
+      r: 3, stroke: "red", strokeOpacity: 1, symbol: "plus"
+    }),
+    Plot.dot(td.slice(td.length - 1, td.length), {
+      x: "longitude", y: "latitude",
+      r: 3, stroke: "red", strokeOpacity: 1, symbol: "times"
+    })
+  ],
+})
+
 viewof map_zoom = Plot.plot({
   style: { fontFamily: "var(--sans-serif)" },
-  projection: { type: projection, domain: circle },
+  projection: { type: "azimuthal-equidistant", domain: circle },
   marks: [
     Plot.frame(),
     Plot.graticule(),
@@ -73,34 +96,6 @@ viewof map_zoom = Plot.plot({
     })
   ],
 })
-
-viewof map_world = Plot.plot({
-  style: { fontFamily: "var(--sans-serif)" },
-  projection: { type: projection },
-  marks: [
-    //Plot.frame(),
-    Plot.sphere(),
-    Plot.graticule(),
-    Plot.geo(land, {fill: "lightgrey"}),
-    Plot.dot(td.slice(1), {
-      x: "longitude", y: "latitude",
-      r: 1, stroke: "black", strokeOpacity: 0.2,
-    }),
-    Plot.dot(td.slice(0, 1), {
-      x: "longitude", y: "latitude",
-      r: 3, stroke: "red", strokeOpacity: 1, symbol: "plus"
-    }),
-    Plot.dot(td.slice(td.length - 1, td.length), {
-      x: "longitude", y: "latitude",
-      r: 3, stroke: "red", strokeOpacity: 1, symbol: "times"
-    })
-  ],
-})
-
-html`<div style="display: flex;">
- <div style="flex-basis:50%"> ${viewof map_zoom}  </div>
- <div style="flex-basis:50%"> ${viewof map_world} </div>
-</div>`
 ```
 
 ```{ojs}
@@ -148,3 +143,5 @@ viewof scatter_flux = Plot.plot({
   ]
 })
 ```
+
+:::

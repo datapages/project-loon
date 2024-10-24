@@ -2,9 +2,17 @@ project:
   title: "Project Loon"
   type: datapage
 
-# website:
-#   navbar:
-#     logo: images/logo.png
+website:
+  navbar:
+    logo: images/logo.png
+  page-footer:
+    background: light
+    left: |
+      Made with [datapages](https://datapages.github.io) using [Quarto](https://quarto.org/) and [Observable](https://observablehq.com/).
+    center: ""
+    right: 
+      - icon: github
+        href: https://github.com/datapages/project-loon
 
 format:
   datapage-html:
