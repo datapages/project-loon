@@ -2,7 +2,7 @@
 title: "Project Loon"
 # subtitle: "A great dataset for data exploration & visualization"
 description: |
-  The purpose of this dataset is to offer an estimate of the horizontal momentum fluxed vertically by the atmospheric internal gravity waves (GWs) observed by Project Loon balloons. This vertical flux of horizontal momentum is commonly referred to as the GW momentum flux. Before estimating the GW momentum fluxes, additional processing was necessary to remove data sampling errors, irregularities, and balloon maneuvering.
+  Welcome to the Datapages site for Project Loon data! For more details on the dataset, please see the About tab. On this page, we offer several tools to select and visualize data from individual balloons. The raw data can be viewed and downloaded from the Data tab, and the Analysis tab offers other data access and analysis tools. We're currently working on more tools to visualize and access the data, so stay tuned!
 ---
 
 ```{r}
