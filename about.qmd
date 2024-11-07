@@ -1,12 +1,14 @@
 ---
 about:
   template: trestles
-  image: images/loon_banner.webp
+  image: images/Google_Loon_-_Launch_Event.jpg
   image-width: 100%
   links:
     - icon: github
       text: GitHub
       href: https://github.com/DataWaveProject/Loon-momentum-fluxes
+    - text: image from Wikipedia/ Github user Wasting Frames
+      href: https://en.wikipedia.org/wiki/Loon_LLC#/media/File:Google_Loon_-_Launch_Event.jpg
 
 citation:
   type: article-journal
