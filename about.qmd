@@ -7,7 +7,7 @@ about:
     - icon: github
       text: GitHub
       href: https://github.com/DataWaveProject/Loon-momentum-fluxes
-    - text: image from Wikipedia/ Github user Wasting Frames
+    - text: image from Wikipedia/ Flickr user Wasting Frames
       href: https://en.wikipedia.org/wiki/Loon_LLC#/media/File:Google_Loon_-_Launch_Event.jpg
 
 citation:
