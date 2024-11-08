@@ -1,9 +1,16 @@
 ---
 title: "Project Loon"
-# subtitle: "A great dataset for data exploration & visualization"
-description: |
-  Welcome to the Datapages site for Project Loon data! For more details on the dataset, please see the About tab. On this page, we offer several tools to select and visualize data from individual balloons. The raw data can be viewed and downloaded from the Data tab, and the Analysis tab offers other data access and analysis tools. We're currently working on more tools to visualize and access the data, so stay tuned!
+about:
+  id: left-text
+  template: solana
+  image: images/unique_flights_map.pdf
+  image-width: 100%
 ---
+
+:::{#left-text}
+Welcome to the Datapages site for Project Loon data! For more details on the dataset, please see the About tab. On this page, we offer several tools to select and visualize data from individual balloons. The raw data can be viewed and downloaded from the Data tab, and the Analysis tab offers other data access and analysis tools. We're currently working on more tools to visualize and access the data, so stay tuned!
+:::
+
 
 ```{r}
 data <- readr::read_rds("data/loon_subset.rds") |>
