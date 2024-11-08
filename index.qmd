@@ -3,7 +3,7 @@ title: "Project Loon"
 about:
   id: left-text
   template: solana
-  image: images/unique_flights_map.jpg
+  image: images/Google_Loon_-_Launch_Event.jpg
   image-width: 100%
 ---
 
