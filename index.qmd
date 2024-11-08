@@ -3,12 +3,14 @@ title: "Project Loon"
 about:
   id: left-text
   template: solana
-  image: images/Google_Loon_-_Launch_Event.jpg
-  image-width: 100%
+  image: images/unique_flights_map.jpg
+  image-width: 50%
 ---
 
 :::{#left-text}
 Welcome to the Datapages site for Project Loon data! For more details on the dataset, please see the About tab. On this page, we offer several tools to select and visualize data from individual balloons. The raw data can be viewed and downloaded from the Data tab, and the Analysis tab offers other data access and analysis tools. We're currently working on more tools to visualize and access the data, so stay tuned!
+
+In this dataset, there are 385 balloon flights, split into 938 data segments. The figure on the right shows the number of unique flights that passed through each 5 degree latitude by 10 degree longitude grid cell.
 :::
 
 
