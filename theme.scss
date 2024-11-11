@@ -22,6 +22,10 @@ form > label, .label:has(+ .form) {
   display: flex;
   flex-direction: column;
   row-gap: 1.5em;
+  
+  label {
+    width: auto !important;
+  }
 }
 
 .quarto-layout-row {
@@ -30,4 +34,8 @@ form > label, .label:has(+ .form) {
 
 .quarto-layout-panel {
   margin-bottom: 0em;
+}
+
+div[id^='O-scope-']{
+  flex-wrap: wrap !important;
 }
