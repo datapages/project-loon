@@ -5,3 +5,29 @@
 $primary: #014240;
 
 /*-- scss:rules --*/
+
+.label:has(+ .form) {
+  flex-shrink: unset !important;
+}
+
+form > label, .label:has(+ .form) {
+  font-weight: bold;
+}
+
+.panel-sidebar {
+  border-radius: 0.5rem;
+}
+
+.filters {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1.5em;
+}
+
+.quarto-layout-row {
+  margin-bottom: 1em;
+}
+
+.quarto-layout-panel {
+  margin-bottom: 0em;
+}

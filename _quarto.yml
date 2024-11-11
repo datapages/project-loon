@@ -3,8 +3,6 @@ project:
   type: datapage
 
 website:
-  navbar:
-    logo: images/logo.png
   page-footer:
     background: light
     left: |
@@ -18,6 +16,7 @@ format:
   datapage-html:
     theme: theme.scss
     mainfont: Source Sans Pro
+    title-block-banner: false
 
 execute: 
   echo: false
