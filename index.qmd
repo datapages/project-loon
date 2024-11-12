@@ -165,7 +165,7 @@ viewof map_globe = Plot.plot({
     Plot.geo(land, {fill: land_color}),
     Plot.line(df, {
       x: "longitude", y: "latitude", z: "segment_id",
-      r: 0.8, stroke: "grey", strokeOpacity: 0.8,
+      r: 0.7, stroke: "grey", strokeOpacity: 0.7,
     }),
   ]
 })
@@ -198,6 +198,9 @@ viewof ds = Inputs.select(dg, {
 ```
 
 ```{ojs}
+start_color = "var(--bs-success)"
+end_color = "var(--bs-danger)"
+
 // map -- whole world equirectangular
 d_found ? Plot.plot({
   style: { fontFamily: "var(--sans-serif)" },
@@ -206,18 +209,20 @@ d_found ? Plot.plot({
     //Plot.sphere(),
     Plot.frame(),
     Plot.graticule(),
-    Plot.geo(land, {fill: "lightgrey"}),
+    Plot.geo(ocean, {fill: ocean_color, opacity: 0.7}),
+    Plot.geo(land, {fill: land_color}),
+    //Plot.geo(land, {fill: "lightgrey"}),
     Plot.line(ds, {
       x: "longitude", y: "latitude",
-      r: 1, stroke: "black", strokeOpacity: 0.2,
+      r: 1, stroke: "black", strokeOpacity: 0.3,
     }),
     Plot.dot(ds.slice(0, 1), {
       x: "longitude", y: "latitude",
-      r: 3, stroke: "red", strokeOpacity: 1, symbol: "plus"
+      r: 3, fill: start_color, symbol: "triangle"
     }),
     Plot.dot(ds.slice(ds.length - 1, ds.length), {
       x: "longitude", y: "latitude",
-      r: 3, stroke: "red", strokeOpacity: 1, symbol: "times"
+      r: 3, fill: end_color, symbol: "square"
     })
   ],
 }) : html``
@@ -245,18 +250,20 @@ d_found ? Plot.plot({
   marks: [
     Plot.frame(),
     Plot.graticule(),
-    Plot.geo(land, {fill: "lightgrey"}),
+    Plot.geo(ocean, {fill: ocean_color, opacity: 0.7}),
+    Plot.geo(land, {fill: land_color}),
+    //Plot.geo(land, {fill: "lightgrey"}),
     Plot.line(ds, {
       x: "longitude", y: "latitude",
-      r: 1, stroke: "black", strokeOpacity: 0.2,
+      r: 1, stroke: "black", strokeOpacity: 0.3,
     }),
     Plot.dot(ds.slice(0, 1), {
       x: "longitude", y: "latitude",
-      r: 6, stroke: "red", strokeOpacity: 1, symbol: "plus"
+      r: 6, fill: start_color, symbol: "triangle"
     }),
     Plot.dot(ds.slice(ds.length - 1, ds.length), {
       x: "longitude", y: "latitude",
-      r: 6, stroke: "red", strokeOpacity: 1, symbol: "times"
+      r: 6, fill: end_color, symbol: "square"
     })
   ],
 }) : html``
@@ -265,7 +272,7 @@ d_found ? Plot.plot({
 ::: {.small}
 ```{ojs}
 // timeseries -- altitude
-d_found ? Plot.plot({
+viewof scatter_altitude = Plot.plot({
   style: { fontFamily: "var(--sans-serif)" },
   width: 900,
   height: 200,
@@ -273,9 +280,15 @@ d_found ? Plot.plot({
   grid: true,
   y: { label: "Altitude (meters)" },
   marks: [
+    Plot.frame(),
     Plot.dot(ds, { x: "time", y: "altitude", r: 0.5 }),
   ]
-}) : html``
+})
+
+d_found ? html`
+  <form><label>Altitude</label></form>
+  ${viewof scatter_altitude}
+` : html``
 
 // timeseries -- winds
 winds = new Map([["Zonal (east-west)", "wind_u"],
@@ -290,6 +303,7 @@ viewof scatter_wind = Plot.plot({
   grid: true,
   y: { label: "Velocity (meters/second)" },
   marks: [
+    Plot.frame(),
     Plot.dot(ds, { x: "time", y: y_wind, r: 0.5 }),
   ]
 })
@@ -312,6 +326,7 @@ viewof scatter_flux = Plot.plot({
   grid: true,
   y: { label: "Flux (millipascals)", transform: (f) => Math.abs(f * 1000) },
   marks: [
+    Plot.frame(),
     Plot.dot(ds, { x: "time", y: y_flux, r: 0.5 }),
   ]
 })
