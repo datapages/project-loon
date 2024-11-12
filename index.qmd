@@ -39,6 +39,7 @@ import {interval} from '@mootari/range-slider' // two ended slider
 interval_format = ([start, end]) => `[${start}, ${end}]`
 
 seasons = ["spring", "summer", "fall", "winter"]
+filter_error = '<p class="filter-error"><i class="bi bi-exclamation-triangle"></i> No segments match selected filters</p>'
 
 // all segments
 s = transpose(segments)
@@ -99,6 +100,7 @@ _Use these filters to narrow down the list of segments, and then select an indiv
 ```{ojs}
 // filter by season(s)
 viewof season = Inputs.checkbox(seasons, {value: seasons, label: "Season (astronomical)"})
+//viewof season = Inputs.checkbox(seasons, {value: ["winter"], label: "Season (astronomical)"})
 ```
 
 ```{ojs}
@@ -184,9 +186,11 @@ viewof latitude = Inputs.range([-90, 90], {label: "Latitude", step: 1, value: 0}
 ::: {layout="[[1], [0.5,1]]"}
 
 ```{ojs}
+d_found = sf.length > 0
+html`${d_found ? '' : filter_error}`
+
 // selector for individual segment
 dg = d3.group(df, d => d.segment_id)
-
 viewof ds = Inputs.select(dg, {
   value: dg.get(112),
   format: ([k, v]) => `Segment ${k} (Flight ${v[0].flight_id})`
@@ -195,7 +199,7 @@ viewof ds = Inputs.select(dg, {
 
 ```{ojs}
 // map -- whole world equirectangular
-viewof map_world = Plot.plot({
+d_found ? Plot.plot({
   style: { fontFamily: "var(--sans-serif)" },
   projection: { type: "equirectangular" },
   marks: [
@@ -216,21 +220,26 @@ viewof map_world = Plot.plot({
       r: 3, stroke: "red", strokeOpacity: 1, symbol: "times"
     })
   ],
-})
+}) : html``
 
 // find minimal radius circle that includes entire flight path
-minLon = d3.min(ds.map(d => d.longitude))
-maxLon = d3.max(ds.map(d => d.longitude))
-minLat = d3.min(ds.map(d => d.latitude))
-maxLat = d3.max(ds.map(d => d.latitude))
-center = [(minLon + maxLon) / 2, (minLat + maxLat) / 2]
-corners = [[minLon, minLat], [minLon, maxLat], [maxLon, minLat], [maxLon, maxLat]]
-dist = d3.max(corners, corner => d3.geoDistance(center, corner))
-radius = dist * (180 / Math.PI)
-circle = d3.geoCircle().center(center).radius(radius)()
+get_circle = (seg) => {
+  const minLon = d3.min(seg.map(d => d.longitude))
+  const maxLon = d3.max(seg.map(d => d.longitude))
+  const minLat = d3.min(seg.map(d => d.latitude))
+  const maxLat = d3.max(seg.map(d => d.latitude))
+  const center = [(minLon + maxLon) / 2, (minLat + maxLat) / 2]
+  const corners = [[minLon, minLat], [minLon, maxLat], [maxLon, minLat], [maxLon, maxLat]]
+  const dist = d3.max(corners, corner => d3.geoDistance(center, corner))
+  const radius = dist * (180 / Math.PI)
+  const circle = d3.geoCircle().center(center).radius(radius)()
+  return circle
+}
+
+circle = d_found ? get_circle(ds) : null
 
 // map -- zoomed in azimuthal
-viewof map_zoom = Plot.plot({
+d_found ? Plot.plot({
   style: { fontFamily: "var(--sans-serif)" },
   projection: { type: "azimuthal-equidistant", domain: circle },
   marks: [
@@ -250,13 +259,13 @@ viewof map_zoom = Plot.plot({
       r: 6, stroke: "red", strokeOpacity: 1, symbol: "times"
     })
   ],
-})
+}) : html``
 ```
 
 ::: {.small}
 ```{ojs}
 // timeseries -- altitude
-viewof scatter_alt = Plot.plot({
+d_found ? Plot.plot({
   style: { fontFamily: "var(--sans-serif)" },
   width: 900,
   height: 200,
@@ -266,7 +275,7 @@ viewof scatter_alt = Plot.plot({
   marks: [
     Plot.dot(ds, { x: "time", y: "altitude", r: 0.5 }),
   ]
-})
+}) : html``
 
 // timeseries -- winds
 winds = new Map([["Zonal (east-west)", "wind_u"],
@@ -285,6 +294,11 @@ viewof scatter_wind = Plot.plot({
   ]
 })
 
+d_found ? html`
+  ${viewof y_wind}
+  ${viewof scatter_wind}
+` : html``
+
 // timeseries -- fluxes
 fluxes = new Map([["Eastward", "flux_east"], ["Westward", "flux_west"],
                   ["Northward", "flux_north"], ["Southward", "flux_south"]])
@@ -301,6 +315,11 @@ viewof scatter_flux = Plot.plot({
     Plot.dot(ds, { x: "time", y: y_flux, r: 0.5 }),
   ]
 })
+
+d_found ? html`
+  ${viewof y_flux}
+  ${viewof scatter_flux}
+` : html``
 ```
 :::
 

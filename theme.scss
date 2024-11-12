@@ -39,3 +39,14 @@ form > label, .label:has(+ .form) {
 div[id^='O-scope-']{
   flex-wrap: wrap !important;
 }
+
+.filter-error { 
+  font-size: 90%;
+  font-style: italic;
+  //border: 1px solid #dee2e6;
+  padding: 0.25rem;
+}
+
+.observablehq--error {
+  display: none;
+}
