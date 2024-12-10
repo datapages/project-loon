@@ -18,19 +18,24 @@ In this dataset, there are 385 balloon flights, split into 938 data segments. Th
 ```{r}
 project <- redivis::user("mikabr")$project("project_loon")
 
-# segments data -- downsampled for now
+# segments data -- downsampled by 10x
 downsample <- project$table("downsample_x10_output")$to_tibble()
 
 # by-segment summary
 segments <- project$table("segment_summary_output")$to_tibble()
 
-# determine which season(s) each segment overlaps with
 source("astro_seasons.R")
 segments_coded <- segments |>
+  # determine which season(s) each segment overlaps with
   dplyr::mutate(season = purrr::map2(time_start, time_end, get_seasons),
                 duration = as.numeric(time_end - time_start))
 
-ojs_define(data = downsample)
+downsample_coded <- downsample |>
+  # compute total flux
+  dplyr::mutate(flux_total = sqrt((flux_east - flux_west) ^ 2 +
+                  (flux_north - flux_south) ^ 2))
+
+ojs_define(data = downsample_coded)
 ojs_define(segments = segments_coded)
 ```
 
@@ -99,7 +104,7 @@ _Use these filters to narrow down the list of segments, and then select an indiv
 ::: {.filters}
 ```{ojs}
 // filter by season(s)
-viewof season = Inputs.checkbox(seasons, {value: seasons, label: "Season (astronomical)"})
+viewof season = Inputs.checkbox(seasons, {value: seasons, label: "Season (astronomical, northern hemisphere)"})
 //viewof season = Inputs.checkbox(seasons, {value: ["winter"], label: "Season (astronomical)"})
 ```
 
@@ -314,8 +319,11 @@ d_found ? html`
 ` : html``
 
 // timeseries -- fluxes
-fluxes = new Map([["Eastward", "flux_east"], ["Westward", "flux_west"],
-                  ["Northward", "flux_north"], ["Southward", "flux_south"]])
+fluxes = new Map([["Total", "flux_total"],
+                  ["Eastward", "flux_east"],
+                  ["Westward", "flux_west"],
+                  ["Northward", "flux_north"],
+                  ["Southward", "flux_south"]])
 viewof y_flux = Inputs.select(fluxes, {label: "Flux"})
 
 viewof scatter_flux = Plot.plot({
