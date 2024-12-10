@@ -19,7 +19,7 @@ In this dataset, there are 385 balloon flights, split into 938 data segments. Th
 project <- redivis::user("mikabr")$project("project_loon")
 
 # segments data -- downsampled by 10x
-downsample <- project$table("downsample_x10_output")$to_tibble()
+downsample <- project$table("downsample_x100_output")$to_tibble()
 
 # by-segment summary
 segments <- project$table("segment_summary_output")$to_tibble()
@@ -206,6 +206,7 @@ viewof ds = Inputs.select(dg, {
 start_color = "var(--bs-success)"
 end_color = "var(--bs-danger)"
 
+print_date = d => d.toISOString().split('T')[0]
 // map -- whole world equirectangular
 d_found ? Plot.plot({
   style: { fontFamily: "var(--sans-serif)" },
@@ -225,9 +226,17 @@ d_found ? Plot.plot({
       x: "longitude", y: "latitude",
       r: 3, fill: start_color, symbol: "triangle"
     }),
+    Plot.text(ds.slice(0, 1), {
+      x: "longitude", y: "latitude",
+      text: d => print_date(d.time), dy: -7, lineAnchor: "bottom"
+    }),
     Plot.dot(ds.slice(ds.length - 1, ds.length), {
       x: "longitude", y: "latitude",
       r: 3, fill: end_color, symbol: "square"
+    }),
+    Plot.text(ds.slice(ds.length - 1, ds.length), {
+      x: "longitude", y: "latitude",
+      text: d => print_date(d.time), dy: -7, lineAnchor: "bottom"
     })
   ],
 }) : html``
@@ -266,9 +275,17 @@ d_found ? Plot.plot({
       x: "longitude", y: "latitude",
       r: 6, fill: start_color, symbol: "triangle"
     }),
+    Plot.text(ds.slice(0, 1), {
+      x: "longitude", y: "latitude",
+      text: d => print_date(d.time), dy: -7, lineAnchor: "bottom"
+    }),
     Plot.dot(ds.slice(ds.length - 1, ds.length), {
       x: "longitude", y: "latitude",
       r: 6, fill: end_color, symbol: "square"
+    }),
+    Plot.text(ds.slice(ds.length - 1, ds.length), {
+      x: "longitude", y: "latitude",
+      text: d => print_date(d.time), dy: -7, lineAnchor: "bottom"
     })
   ],
 }) : html``
