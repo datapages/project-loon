@@ -1,17 +1,32 @@
 ---
-title: "Project Loon"
-about:
-  id: blurb
-  template: solana
-  image: images/unique_flights_map.jpg
-  image-width: 50%
+# title: "Project Loon"
+# subtitle: |
+#  Welcome to the datapage for Project Loon data! This dataset consists of 385 balloon flights, split into 938 data segments. For more details on the dataset, please see the About tab. On this page, we offer several tools to select and visualize data from individual balloons. The raw data can be viewed and downloaded from the Data tab, and the Analysis tab offers other data access and analysis tools. We're currently working on more tools to visualize and access the data, so stay tuned!
+# about:
+#   id: blurb
+#   template: jolla
+#   image: images/google_loon_launch_event.jpg
+#   image-width: 30%
 ---
 
-::: {#blurb}
-Welcome to the datapage for Project Loon data! For more details on the dataset, please see the About tab. On this page, we offer several tools to select and visualize data from individual balloons. The raw data can be viewed and downloaded from the Data tab, and the Analysis tab offers other data access and analysis tools. We're currently working on more tools to visualize and access the data, so stay tuned!
+:::: {.columns}
 
-In this dataset, there are 385 balloon flights, split into 938 data segments. The figure on the right shows the number of unique flights that passed through each 5 degree latitude by 10 degree longitude grid cell.
+::: {.column width="63%"}
+::: {.blurb}
+# Project Loon
+
+Welcome to the datapage for Project Loon data! This dataset consists of 385 balloon flights, split into 938 data segments. For more details on the dataset, please see the About tab. On this page, we offer several tools to select and visualize data from individual balloons. The raw data can be viewed and downloaded from the Data tab, and the Analysis tab offers other data access and analysis tools. We're currently working on more tools to visualize and access the data, so stay tuned!
 :::
+:::
+
+::: {.column width="2%"}
+:::
+
+::: {.column width="35%"}
+![Image from [Wikipedia](https://commons.wikimedia.org/wiki/Category:Project_Loon#/media/File:Google_Loon_-_Launch_Event.jpg) by Flickr user Wasting Frames, license [CC BY 2.0](https://creativecommons.org/licenses/by/2.0).](images/google_loon_launch_event.jpg)
+:::
+
+::::
 
 -----
 
