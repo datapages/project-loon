@@ -62,8 +62,9 @@ div[id^='O-scope-']{
   display: none;
 }
 
-.btn-quarto {
-  background-color: #3b99fc;
+div.cell-output-display .btn-quarto {
+  --bs-btn-hover-bg: #3b99fc;
+  --bs-btn-bg: #3b99fc;
   border: none;
   border-radius: 0.5rem;
 }

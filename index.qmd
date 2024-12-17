@@ -51,8 +51,11 @@ ojs_define(data = downsample_coded)
 ojs_define(segments = segments_coded)
 ```
 
+{{< include _interval.qmd >}}
+
 ```{ojs}
-import {interval} from '@mootari/range-slider' // two ended slider
+//import {interval} from "./interval.js" // two ended slider
+//import {interval} from '@mootari/range-slider' // two ended slider
 interval_format = ([start, end]) => `[${start}, ${end}]`
 
 seasons = ["spring", "summer", "fall", "winter"]
@@ -174,7 +177,6 @@ function convertToCSV(arr) {
 
 download_button = {
   let button = Inputs.button(html`Download ${sf.length} segment${sf.length > 1 ? "s" : ""}`);
-  button.classList.add("download");
   button.addEventListener("click", function () {
     download("project_loon_filtered.csv", convertToCSV(df));
   });
