@@ -1,14 +1,3 @@
----
-# title: "Project Loon"
-# subtitle: |
-#  Welcome to the datapage for Project Loon data! This dataset consists of 385 balloon flights, split into 938 data segments. For more details on the dataset, please see the About tab. On this page, we offer several tools to select and visualize data from individual balloons. The raw data can be viewed and downloaded from the Data tab, and the Analysis tab offers other data access and analysis tools. We're currently working on more tools to visualize and access the data, so stay tuned!
-# about:
-#   id: blurb
-#   template: jolla
-#   image: images/google_loon_launch_event.jpg
-#   image-width: 30%
----
-
 :::: {.columns}
 
 ::: {.column width="63%"}
@@ -34,7 +23,8 @@ Welcome to the datapage for Project Loon data! This dataset consists of 385 ball
 project <- redivis::user("mikabr")$project("project_loon")
 
 # segments data -- downsampled by 10x
-downsample <- project$table("downsample_x100_output")$to_tibble()
+downsample <- project$table("downsample_x10_output")$to_tibble()
+# downsample <- project$table("downsample_x100_output")$to_tibble()
 
 # by-segment summary
 segments <- project$table("segment_summary_output")$to_tibble()
@@ -45,10 +35,17 @@ segments_coded <- segments |>
   dplyr::mutate(season = purrr::map2(time_start, time_end, get_seasons),
                 duration = as.numeric(time_end - time_start))
 
+sample_meta <- segments_coded |>
+  dplyr::select(flight_id, segment_id, segment_seasons = season) |>
+  dplyr::mutate(segment_seasons = map_chr(segment_seasons, \(s) paste(s, collapse = " ")))
+
 downsample_coded <- downsample |>
   # compute total flux
   dplyr::mutate(flux_total = sqrt((flux_east - flux_west) ^ 2 +
-                  (flux_north - flux_south) ^ 2))
+                  (flux_north - flux_south) ^ 2)) |>
+  dplyr::left_join(sample_meta) |>
+  # move segment_id column to earlier
+  dplyr::relocate(segment_id, .after = flight_id)
 
 ojs_define(data = downsample_coded)
 ojs_define(segments = segments_coded)
@@ -108,19 +105,21 @@ html`<style>
     padding: 0.25rem 0.5rem;
     width: auto;
   }
+  
 }
 </style>`
 ```
 
-::: {.panel-sidebar}
+:::: {.panel-sidebar}
 
 _Use these filters to narrow down the list of segments, and then select an individual segment from this list below to visualize its trajectory and telemetry._
 
-::: {.filters}
+::: {.side-inputs}
+
+::: {.filters-container}
 ```{ojs}
 // filter by season(s)
 viewof season = Inputs.checkbox(seasons, {value: seasons, label: "Season (astronomical, northern hemisphere)"})
-//viewof season = Inputs.checkbox(seasons, {value: ["winter"], label: "Season (astronomical)"})
 ```
 
 ```{ojs}
@@ -145,6 +144,52 @@ viewof duration_range = interval([0, 100], {
 ```
 :::
 
+::: {.button-container}
+```{ojs}
+function download(filename, text) {
+  var element = document.createElement("a");
+  element.setAttribute(
+    "href",
+    "data:text/csv;charset=utf-8," + encodeURIComponent(text)
+  );
+  element.setAttribute("download", filename);
+
+  element.style.display = "none";
+  document.body.appendChild(element);
+
+  element.click();
+
+  document.body.removeChild(element);
+}
+
+function convertToCSV(arr) {
+  const array = [Object.keys(arr[0])].concat(arr);
+
+  return array
+    .map((it) => {
+      return Object.values(it).toString();
+    })
+    .join("\n");
+}
+
+download_button = {
+  let button = Inputs.button(html`Download ${sf.length} segment${sf.length > 1 ? "s" : ""}`);
+  button.classList.add("download");
+  button.addEventListener("click", function () {
+    download("project_loon_filtered.csv", convertToCSV(df));
+  });
+  return button;
+}
+```
+
+:::
+
+:::
+
+::::
+
+:::: {.panel-center}
+
 ```{ojs}
 // filtered segments
 sf = s.filter(d => season.some(se => d.season.includes(se)))
@@ -161,10 +206,6 @@ sf_id = sf.map(d => d.segment_id)
 // filtered segments' data
 df = d.filter(d => sf_id.includes(d.segment_id))
 ```
-
-:::
-
-::: {.panel-center}
 
 ```{ojs}
 // https://github.com/martynafford/natural-earth-geojson/tree/master/110m/physical
@@ -199,7 +240,7 @@ viewof latitude = Inputs.range([-90, 90], {label: "Latitude", step: 1, value: 0}
 ```
 :::
 
-:::
+::::
 
 -----
 
@@ -215,6 +256,8 @@ viewof ds = Inputs.select(dg, {
   value: dg.get(112),
   format: ([k, v]) => `Segment ${k} (Flight ${v[0].flight_id})`
 })
+
+d_found ? html`${viewof ds}` : html``
 ```
 
 ```{ojs}

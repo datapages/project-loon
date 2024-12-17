@@ -22,14 +22,21 @@ form > label, .label:has(+ .form) {
   border-radius: 0.5rem;
 }
 
-.filters {
+.filters-container {
   display: flex;
   flex-direction: column;
-  row-gap: 1.5em;
+  row-gap: 2em;
   
   label {
     width: auto !important;
   }
+}
+
+.side-inputs {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
 }
 
 .quarto-layout-row {
@@ -53,4 +60,10 @@ div[id^='O-scope-']{
 
 .observablehq--error {
   display: none;
+}
+
+.btn-quarto {
+  background-color: #3b99fc;
+  border: none;
+  border-radius: 0.5rem;
 }
