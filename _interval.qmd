@@ -1,4 +1,4 @@
-```{ojs}
+```{ojs _interval}
 // https://observablehq.com/@mootari/range-slider
 
 function interval(range = [], options = {}) {

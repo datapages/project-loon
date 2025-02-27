@@ -1,4 +1,4 @@
-```{ojs}
+```{ojs _ns-styles}
 // styles that need to be defined dynamically due to ojs namespacing
 
 // get ojs class namespace
