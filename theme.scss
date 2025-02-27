@@ -68,3 +68,8 @@ div.cell-output-display .btn-quarto {
   border: none;
   border-radius: 0.5rem;
 }
+
+// hide checkboxes in Inputs.table
+table input {
+  display: none
+}

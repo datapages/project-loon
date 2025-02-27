@@ -25,28 +25,37 @@ project <- redivis::user("mikabr")$project("project_loon")
 # segments data -- downsampled by 10x
 downsample <- project$table("downsample_x10_output")$to_tibble()
 # downsample <- project$table("downsample_x100_output")$to_tibble()
+# downsample <- readr::read_csv("data/downsample_x100_output.csv")
 
 # by-segment summary
 segments <- project$table("segment_summary_output")$to_tibble()
+# segments <- readr::read_csv("data/segment_summary_output.csv")
 
+# determine which season(s) each segment overlaps with and compute durations
 source("astro_seasons.R")
 segments_coded <- segments |>
-  # determine which season(s) each segment overlaps with
   dplyr::mutate(season = purrr::map2(time_start, time_end, get_seasons),
                 duration = as.numeric(time_end - time_start))
 
+# turn seasons into string for adding to segments data
 sample_meta <- segments_coded |>
   dplyr::select(flight_id, segment_id, segment_seasons = season) |>
-  dplyr::mutate(segment_seasons = map_chr(segment_seasons, \(s) paste(s, collapse = " ")))
+  dplyr::mutate(segment_seasons = purrr::map_chr(segment_seasons,
+                                                 \(s) paste(s, collapse = " ")))
 
+# prep segments data
 downsample_coded <- downsample |>
   # compute total flux
   dplyr::mutate(flux_total = sqrt((flux_east - flux_west) ^ 2 +
                   (flux_north - flux_south) ^ 2)) |>
+  # add segment metadata
   dplyr::left_join(sample_meta) |>
   # move segment_id column to earlier
-  dplyr::relocate(segment_id, .after = flight_id)
+  dplyr::relocate(segment_id, .after = flight_id) |>
+  # sort each segment's data chronologically
+  dplyr::arrange(flight_id, segment_id, time)
 
+# pass data and metadata to OJS
 ojs_define(data = downsample_coded)
 ojs_define(segments = segments_coded)
 ```
@@ -54,11 +63,13 @@ ojs_define(segments = segments_coded)
 {{< include _interval.qmd >}}
 
 ```{ojs}
-//import {interval} from "./interval.js" // two ended slider
-//import {interval} from '@mootari/range-slider' // two ended slider
+// formatting function for how two ended slider displays selected range
 interval_format = ([start, end]) => `[${start}, ${end}]`
 
+// array of seasons for season selector
 seasons = ["spring", "summer", "fall", "winter"]
+
+// error to display if filters result in no matching segments
 filter_error = '<p class="filter-error"><i class="bi bi-exclamation-triangle"></i> No segments match selected filters</p>'
 
 // all segments
@@ -68,50 +79,7 @@ s = transpose(segments)
 d = transpose(data).map(d => ({ ...d, time: new Date(d.time) }))
 ```
 
-```{ojs}
-// get ojs class namespace
-ns = Inputs.text().classList[0]
-
-// custom css to override some ojs defaults for inputs
-html`<style>
-
-  .${ns} {
-    --label-width: 70px;
-  }
-
-  .${ns} div label {
-    background-color: #f4f4f4;
-    padding: 0.25rem 0.5rem;
-    border-radius: 0.5rem;
-    margin-right: 0.25rem;
-    width: auto;
-  }
-  
-  .${ns} div label:hover,
-  .${ns} div label:active,
-  .${ns} div label:focus {
-    background-color: #cdecff;
-  }
-  
-  .${ns} div input[type="number"] {
-    background-color: #f4f4f4;
-    padding: 0.25rem 0.5rem;
-    border-radius: 0.5rem;
-    flex-shrink: 3;
-    border: none;
-  }
-  
-  .${ns} select {
-    background-color: #f4f4f4;
-    border: none;
-    border-radius: 0.5rem;
-    padding: 0.25rem 0.5rem;
-    width: auto;
-  }
-  
-}
-</style>`
-```
+{{< include _style.qmd >}}
 
 :::: {.panel-sidebar}
 
@@ -149,6 +117,7 @@ viewof duration_range = interval([0, 100], {
 
 ::: {.button-container}
 ```{ojs}
+// callback function for download button
 function download(filename, text) {
   var element = document.createElement("a");
   element.setAttribute(
@@ -165,6 +134,7 @@ function download(filename, text) {
   document.body.removeChild(element);
 }
 
+// callback helper -- array to csv
 function convertToCSV(arr) {
   const array = [Object.keys(arr[0])].concat(arr);
 
@@ -175,6 +145,7 @@ function convertToCSV(arr) {
     .join("\n");
 }
 
+// download data button
 download_button = {
   let button = Inputs.button(html`Download ${sf.length} segment${sf.length > 1 ? "s" : ""}`);
   button.addEventListener("click", function () {
@@ -194,12 +165,12 @@ download_button = {
 
 ```{ojs}
 // filtered segments
-sf = s.filter(d => season.some(se => d.season.includes(se)))
-      .filter(d => d.longitude_min <= longitude_range[1] &
+sf = s.filter(d => season.some(se => d.season.includes(se))) // by season
+      .filter(d => d.longitude_min <= longitude_range[1] & // by longitude
                    d.longitude_max >= longitude_range[0])
-      .filter(d => d.latitude_min <= latitude_range[1] &
+      .filter(d => d.latitude_min <= latitude_range[1] & // by latitude
                    d.latitude_max >= latitude_range[0])
-      .filter(d => d.duration >= duration_range[0] &
+      .filter(d => d.duration >= duration_range[0] & // by duration
                    d.duration <= duration_range[1])
 
 // filtered segments' IDs
@@ -210,10 +181,12 @@ df = d.filter(d => sf_id.includes(d.segment_id))
 ```
 
 ```{ojs}
+// topoJSON objects for map features
 // https://github.com/martynafford/natural-earth-geojson/tree/master/110m/physical
 land = FileAttachment("topo/ne_110m_land.json").json()
 ocean = FileAttachment("topo/ne_110m_ocean.json").json()
 
+// fill colors for land and ocean on maps
 land_color = "wheat"
 ocean_color = "#8398aa"
 
@@ -249,13 +222,16 @@ viewof latitude = Inputs.range([-90, 90], {label: "Latitude", step: 1, value: 0}
 ::: {layout="[[1], [0.5,1]]"}
 
 ```{ojs}
+// indicator for whether any segments match selected filters
 d_found = sf.length > 0
+// display error is no matches
 html`${d_found ? '' : filter_error}`
 
-// selector for individual segment
+// d grouped by segment ID
 dg = d3.group(df, d => d.segment_id)
+// selector for individual segment
 viewof ds = Inputs.select(dg, {
-  value: dg.get(112),
+  value: dg.get(112), // default segment
   format: ([k, v]) => `Segment ${k} (Flight ${v[0].flight_id})`
 })
 
@@ -263,58 +239,72 @@ d_found ? html`${viewof ds}` : html``
 ```
 
 ```{ojs}
+// colors for start and end markers on maps
 start_color = "var(--bs-success)"
 end_color = "var(--bs-danger)"
 
+// function for how to format data on map
 print_date = d => d.toISOString().split('T')[0]
+
 // map -- whole world equirectangular
 d_found ? Plot.plot({
   style: { fontFamily: "var(--sans-serif)" },
   projection: { type: "equirectangular" },
   marks: [
-    //Plot.sphere(),
     Plot.frame(),
     Plot.graticule(),
     Plot.geo(ocean, {fill: ocean_color, opacity: 0.7}),
     Plot.geo(land, {fill: land_color}),
-    //Plot.geo(land, {fill: "lightgrey"}),
+    // trajectory path
     Plot.line(ds, {
       x: "longitude", y: "latitude",
       r: 1, stroke: "black", strokeOpacity: 0.3,
     }),
+    // start marker
     Plot.dot(ds.slice(0, 1), {
       x: "longitude", y: "latitude",
       r: 3, fill: start_color, symbol: "triangle"
     }),
+    // start date text
     Plot.text(ds.slice(0, 1), {
       x: "longitude", y: "latitude",
-      text: d => print_date(d.time), dy: -7, lineAnchor: "bottom"
+      text: d => print_date(d.time), dy: -7, lineAnchor: "bottom", fontSize: 14
     }),
+    // end marker
     Plot.dot(ds.slice(ds.length - 1, ds.length), {
       x: "longitude", y: "latitude",
       r: 3, fill: end_color, symbol: "square"
     }),
+    // end date text
     Plot.text(ds.slice(ds.length - 1, ds.length), {
       x: "longitude", y: "latitude",
-      text: d => print_date(d.time), dy: -7, lineAnchor: "bottom"
+      text: d => print_date(d.time), dy: -7, lineAnchor: "bottom", fontSize: 14
     })
   ],
 }) : html``
 
-// find minimal radius circle that includes entire flight path
+// function to find minimal radius circle that includes entire flight path
+// (for defining domain for zoomed in azimuthal map)
 get_circle = (seg) => {
+  // find min and max longitude and latitude
   const minLon = d3.min(seg.map(d => d.longitude))
   const maxLon = d3.max(seg.map(d => d.longitude))
   const minLat = d3.min(seg.map(d => d.latitude))
   const maxLat = d3.max(seg.map(d => d.latitude))
-  const center = [(minLon + maxLon) / 2, (minLat + maxLat) / 2]
+  // define rectangle with min/max long/lat corners
   const corners = [[minLon, minLat], [minLon, maxLat], [maxLon, minLat], [maxLon, maxLat]]
+  // find rectangle's center
+  const center = [(minLon + maxLon) / 2, (minLat + maxLat) / 2]
+  // find max of geo distances from each corner to center
   const dist = d3.max(corners, corner => d3.geoDistance(center, corner))
+  // turn geo distance into radius
   const radius = dist * (180 / Math.PI)
+  // define geo circle with computed center and radius
   const circle = d3.geoCircle().center(center).radius(radius)()
   return circle
 }
 
+// find above circle
 circle = d_found ? get_circle(ds) : null
 
 // map -- zoomed in azimuthal
@@ -326,26 +316,30 @@ d_found ? Plot.plot({
     Plot.graticule(),
     Plot.geo(ocean, {fill: ocean_color, opacity: 0.7}),
     Plot.geo(land, {fill: land_color}),
-    //Plot.geo(land, {fill: "lightgrey"}),
+    // trajectory path
     Plot.line(ds, {
       x: "longitude", y: "latitude",
       r: 1, stroke: "black", strokeOpacity: 0.3,
     }),
+    // start marker
     Plot.dot(ds.slice(0, 1), {
       x: "longitude", y: "latitude",
       r: 6, fill: start_color, symbol: "triangle"
     }),
+    // start date text
     Plot.text(ds.slice(0, 1), {
       x: "longitude", y: "latitude",
-      text: d => print_date(d.time), dy: -7, lineAnchor: "bottom"
+      text: d => print_date(d.time), dy: -8, lineAnchor: "bottom", fontSize: 14
     }),
+    // end marker
     Plot.dot(ds.slice(ds.length - 1, ds.length), {
       x: "longitude", y: "latitude",
       r: 6, fill: end_color, symbol: "square"
     }),
+    // end date text
     Plot.text(ds.slice(ds.length - 1, ds.length), {
       x: "longitude", y: "latitude",
-      text: d => print_date(d.time), dy: -7, lineAnchor: "bottom"
+      text: d => print_date(d.time), dy: -8, lineAnchor: "bottom", fontSize: 14
     })
   ],
 }) : html``
@@ -409,7 +403,8 @@ viewof scatter_flux = Plot.plot({
   height: 200,
   inset: 8,
   grid: true,
-  y: { label: "Flux (millipascals)", transform: (f) => Math.abs(f * 1000) },
+//  y: { label: "Flux (millipascals)", transform: (f) => Math.abs(f * 1000) },
+  y: { label: "Flux (log mPa)", transform: (f) => Math.log(Math.abs(f * 1000)) },
   marks: [
     Plot.frame(),
     Plot.dot(ds, { x: "time", y: y_flux, r: 0.5 }),
@@ -421,6 +416,12 @@ d_found ? html`
   ${viewof scatter_flux}
 ` : html``
 ```
+
 :::
+
+```{ojs}
+// data table for selected segment's data
+Inputs.table(ds)
+```
 
 :::
