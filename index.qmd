@@ -63,6 +63,9 @@ ojs_define(segments = segments_coded)
 {{< include _interval.qmd >}}
 
 ```{ojs}
+// import newer version of observable plot than the one embedded in quarto 
+Plot = import("https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6/+esm")
+
 // formatting function for how two ended slider displays selected range
 interval_format = ([start, end]) => `[${start}, ${end}]`
 
@@ -203,6 +206,10 @@ viewof map_globe = Plot.plot({
       x: "longitude", y: "latitude", z: "segment_id",
       r: 0.7, stroke: "grey", strokeOpacity: 0.7,
     }),
+    Plot.tip(df, Plot.pointerY({
+      x: "longitude", y: "latitude", title: (d) => d.segment_id,
+      format: (d) => `${d}`, textPadding: 4,
+    }))
   ]
 })
 ```
