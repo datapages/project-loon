@@ -206,7 +206,7 @@ viewof map_globe = Plot.plot({
       x: "longitude", y: "latitude", z: "segment_id",
       r: 0.7, stroke: "grey", strokeOpacity: 0.7,
     }),
-    Plot.tip(df, Plot.pointerY({
+    Plot.tip(df, Plot.pointer({
       x: "longitude", y: "latitude", title: (d) => d.segment_id,
       format: (d) => `${d}`, textPadding: 4,
     }))
