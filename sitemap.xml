@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://datapages.github.io/project-loon/analysis.html</loc>
-    <lastmod>2025-02-27T22:09:40.491Z</lastmod>
-  </url>
-  <url>
     <loc>https://datapages.github.io/project-loon/index.html</loc>
-    <lastmod>2025-02-27T22:09:40.521Z</lastmod>
+    <lastmod>2025-06-03T19:43:27.927Z</lastmod>
   </url>
   <url>
-    <loc>https://datapages.github.io/project-loon/data.html</loc>
-    <lastmod>2025-02-27T22:09:40.491Z</lastmod>
+    <loc>https://datapages.github.io/project-loon/analysis.html</loc>
+    <lastmod>2025-06-03T19:43:27.898Z</lastmod>
   </url>
   <url>
     <loc>https://datapages.github.io/project-loon/about.html</loc>
-    <lastmod>2025-02-27T22:09:40.491Z</lastmod>
+    <lastmod>2025-06-03T19:43:27.898Z</lastmod>
+  </url>
+  <url>
+    <loc>https://datapages.github.io/project-loon/data.html</loc>
+    <lastmod>2025-06-03T19:43:27.898Z</lastmod>
   </url>
 </urlset>
