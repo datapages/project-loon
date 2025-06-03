@@ -58,6 +58,9 @@ downsample_coded <- downsample |>
 # pass data and metadata to OJS
 ojs_define(data = downsample_coded)
 ojs_define(segments = segments_coded)
+
+# pass Redivis API token to OJS
+ojs_define(REDIVIS_API_TOKEN = Sys.getenv("REDIVIS_API_TOKEN"))
 ```
 
 {{< include _interval.qmd >}}
@@ -68,7 +71,7 @@ Plot = import("https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6/+esm")
 
 // load and authorize redivis
 redivis = require("redivis")
-auth = redivis.authorize()
+auth = redivis.authorize({ apiToken: REDIVIS_API_TOKEN })
 
 // formatting function for how two ended slider displays selected range
 interval_format = ([start, end]) => `[${start}, ${end}]`
