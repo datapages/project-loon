@@ -39,6 +39,16 @@ form > label, .label:has(+ .form) {
   height: 100%;
 }
 
+.segment-buttons {
+  display: flex;
+  column-gap: 1em;
+  font-size: .9rem;
+
+  form {
+    --label-width: 0 !important;
+  }
+}
+
 .quarto-layout-row {
   margin-bottom: 1em;
 }

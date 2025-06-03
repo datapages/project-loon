@@ -66,14 +66,15 @@ ojs_define(segments = segments_coded)
 // import newer version of observable plot than the one embedded in quarto 
 Plot = import("https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6/+esm")
 
+// load and authorize redivis
+redivis = require("redivis")
+auth = redivis.authorize()
+
 // formatting function for how two ended slider displays selected range
 interval_format = ([start, end]) => `[${start}, ${end}]`
 
 // array of seasons for season selector
 seasons = ["spring", "summer", "fall", "winter"]
-
-// error to display if filters result in no matching segments
-filter_error = '<p class="filter-error"><i class="bi bi-exclamation-triangle"></i> No segments match selected filters</p>'
 
 // all segments
 s = transpose(segments)
@@ -150,7 +151,7 @@ function convertToCSV(arr) {
 
 // download data button
 download_button = {
-  let button = Inputs.button(html`Download ${sf.length} segment${sf.length > 1 ? "s" : ""}`);
+  let button = Inputs.button(html`Download ${sf.length} segment${sf.length != 1 ? "s" : ""} (downsampled)`);
   button.addEventListener("click", function () {
     download("project_loon_filtered.csv", convertToCSV(df));
   });
@@ -232,7 +233,7 @@ viewof latitude = Inputs.range([-90, 90], {label: "Latitude", step: 1, value: 0}
 // indicator for whether any segments match selected filters
 d_found = sf.length > 0
 // display error is no matches
-html`${d_found ? '' : filter_error}`
+d_found ? html`<div></div>` : html`<p class="filter-error"><i class="bi bi-exclamation-triangle"></i> No segments match selected filters</p>`
 
 // d grouped by segment ID
 dg = d3.group(df, d => d.segment_id)
@@ -242,7 +243,30 @@ viewof ds = Inputs.select(dg, {
   format: ([k, v]) => `Segment ${k} (Flight ${v[0].flight_id})`
 })
 
-d_found ? html`${viewof ds}` : html``
+async function getSegment(seg_id) {
+  const rows = await redivis
+    .user('SDSS')
+    .dataset('project_loon')
+    .query(`
+       SELECT *
+       FROM loon
+       WHERE segment_id = ${seg_id}
+    `)
+    .listRows()
+  return rows;
+}
+
+viewof download_button_segment = {
+  let button = Inputs.button("Download segment");
+  button.addEventListener("click", async function () {
+    const df_full = await getSegment(ds[0].segment_id);
+    download("project_loon_filtered.csv", convertToCSV(df_full));
+  });
+  return button;
+}
+
+d_found ? html`<div class="segment-buttons">${viewof ds} ${viewof download_button_segment}</div>` : html`<div></div>`
+//d_found ? html`${viewof download_button_segment}` : html`<div></div>`
 ```
 
 ```{ojs segments-maps}
@@ -288,7 +312,7 @@ d_found ? Plot.plot({
       text: d => print_date(d.time), dy: -7, lineAnchor: "bottom", fontSize: 14
     })
   ],
-}) : html``
+}) : html`<div></div>`
 
 // function to find minimal radius circle that includes entire flight path
 // (for defining domain for zoomed in azimuthal map)
@@ -349,7 +373,7 @@ d_found ? Plot.plot({
       text: d => print_date(d.time), dy: -8, lineAnchor: "bottom", fontSize: 14
     })
   ],
-}) : html``
+}) : html`<div></div>`
 ```
 
 ::: {.small}
@@ -371,7 +395,7 @@ viewof scatter_altitude = Plot.plot({
 d_found ? html`
   <form><label>Altitude</label></form>
   ${viewof scatter_altitude}
-` : html``
+` : html`<div></div>`
 
 // timeseries -- winds
 winds = new Map([["Zonal (east-west)", "wind_u"],
@@ -394,7 +418,7 @@ viewof scatter_wind = Plot.plot({
 d_found ? html`
   ${viewof y_wind}
   ${viewof scatter_wind}
-` : html``
+` : html`<div></div>`
 
 // timeseries -- fluxes
 fluxes = new Map([["Total", "flux_total"],
@@ -421,14 +445,14 @@ viewof scatter_flux = Plot.plot({
 d_found ? html`
   ${viewof y_flux}
   ${viewof scatter_flux}
-` : html``
+` : html`<div></div>`
 ```
 
 :::
 
 ```{ojs table}
 // data table for selected segment's data
-Inputs.table(ds)
+d_found ? Inputs.table(ds) : html`<div></div>`
 ```
 
 :::
