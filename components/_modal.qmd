@@ -1,0 +1,63 @@
+```{ojs}
+// modified from:
+// https://github.com/jimjam-slam/quarto-experiments/tree/main/modal-dialog
+
+html`
+<a href="#" data-micromodal-trigger="mymodal" tabindex="0">
+  <i class="bi bi-clipboard-data"></i>
+  Generate code snippet
+</a>
+`
+```
+
+```{ojs}
+micro = require("micromodal@0.4.10");
+m = micro.init({
+  awaitOpenAnimation: true,
+  awaitCloseAnimation: true
+});
+```
+
+:::::: {#mymodal .modal .micromodal-slide aria-hidden="true"}
+::::: {.modal__overlay tabindex="-1" data-micromodal-close="true"}
+:::: {.modal__container role="dialog" aria-modal="true" aria-labelledby="mymodal-title"}
+<button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
+<header>
+## Data query code snippet
+</header>
+
+::: {.panel-tabset}
+
+## R
+
+```{ojs}
+html`
+<div class="sourceCode">
+<pre class="sourceCode r code-with-copy">
+<code class="sourceCode r">
+<span>${r_snippet()}</span>
+</code>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</pre>
+</div>
+`
+```
+
+## Python
+
+```{ojs}
+html`
+<div class="sourceCode">
+<pre class="sourceCode python code-with-copy">
+<code class="sourceCode python">
+<span>${py_snippet()}</span>
+</code>
+<button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button>
+</pre>
+</div>
+`
+```
+:::
+::::
+:::::
+::::::

@@ -14,9 +14,12 @@ website:
 
 format:
   datapage-html:
-    theme: theme.scss
+    theme:
+      - resources/scss/main.scss
+      - resources/scss/modal.scss
     mainfont: Source Sans Pro
     title-block-banner: false
+    anchor-sections: false
 
 execute: 
   echo: false

@@ -19,51 +19,10 @@ Welcome to the datapage for Project Loon data! This dataset consists of 385 ball
 
 -----
 
-```{r load-data}
-project <- redivis::user("mikabr")$project("project_loon")
 
-# segments data -- downsampled by 10x
-downsample <- project$table("downsample_x10_output")$to_tibble()
-# downsample <- project$table("downsample_x100_output")$to_tibble()
-# downsample <- readr::read_csv("data/downsample_x100_output.csv")
+{{< include components/_load_data.qmd >}}
 
-# by-segment summary
-segments <- project$table("segment_summary_output")$to_tibble()
-# segments <- readr::read_csv("data/segment_summary_output.csv")
-
-# determine which season(s) each segment overlaps with and compute durations
-source("astro_seasons.R")
-segments_coded <- segments |>
-  dplyr::mutate(season = purrr::map2(time_start, time_end, get_seasons),
-                duration = as.numeric(time_end - time_start))
-
-# turn seasons into string for adding to segments data
-sample_meta <- segments_coded |>
-  dplyr::select(flight_id, segment_id, segment_seasons = season) |>
-  dplyr::mutate(segment_seasons = purrr::map_chr(segment_seasons,
-                                                 \(s) paste(s, collapse = " ")))
-
-# prep segments data
-downsample_coded <- downsample |>
-  # compute total flux
-  dplyr::mutate(flux_total = sqrt((flux_east - flux_west) ^ 2 +
-                  (flux_north - flux_south) ^ 2)) |>
-  # add segment metadata
-  dplyr::left_join(sample_meta) |>
-  # move segment_id column to earlier
-  dplyr::relocate(segment_id, .after = flight_id) |>
-  # sort each segment's data chronologically
-  dplyr::arrange(flight_id, segment_id, time)
-
-# pass data and metadata to OJS
-ojs_define(data = downsample_coded)
-ojs_define(segments = segments_coded)
-
-# pass Redivis API token to OJS
-# ojs_define(REDIVIS_API_TOKEN = Sys.getenv("REDIVIS_API_TOKEN"))
-```
-
-{{< include _interval.qmd >}}
+{{< include components/_interval.qmd >}}
 
 ```{ojs prelims}
 // import newer version of observable plot than the one embedded in quarto 
@@ -71,7 +30,7 @@ Plot = import("https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6/+esm")
 
 // load and authorize redivis
 redivis = require("redivis")
-// auth = redivis.authorize({ apiToken: REDIVIS_API_TOKEN })
+//auth = redivis.authorize({ apiToken: REDIVIS_API_TOKEN })
 
 // formatting function for how two ended slider displays selected range
 interval_format = ([start, end]) => `[${start}, ${end}]`
@@ -86,7 +45,7 @@ s = transpose(segments)
 d = transpose(data).map(d => ({ ...d, time: new Date(d.time) }))
 ```
 
-{{< include _style.qmd >}}
+{{< include components/_style.qmd >}}
 
 :::: {.panel-sidebar}
 
@@ -122,7 +81,7 @@ viewof duration_range = interval([0, 100], {
 ```
 :::
 
-::: {.button-container}
+::: {.download-button-container}
 ```{ojs download-button}
 // callback function for download button
 function download(filename, text) {
@@ -161,11 +120,52 @@ download_button = {
   return button;
 }
 ```
-
 :::
 
-:::
 
+::: {.generate-snippet-container}
+```{ojs code-snippets}
+// simple templating function: replace strings of the form "{{variable}}" in the
+// template with the corresponding value from values
+function fillTemplate(template, values) {
+  return template.replace(/\{\{(\w+)\}\}/g, (match, key) => {
+    return values[key] !== undefined ? values[key] : match;
+  });
+};
+
+function generateSeasonCondition(seasons) {
+  if (!seasons || seasons.length === 0) {
+    return '';
+  }
+  return seasons.map(season => `segments.${season}`).join(' OR ');
+}
+
+// read in template files
+sql_template = FileAttachment("resources/templates/query.sql").text();
+r_template = FileAttachment("resources/templates/query_snippet.R").text();
+py_template = FileAttachment("resources/templates/query_snippet.py").text();
+
+// create sql query using input filter values, indent all lines
+sql_query = fillTemplate(sql_template, {
+  longitude_min: longitude_range[0],
+  longitude_max: longitude_range[1],
+  latitude_min: latitude_range[0],
+  latitude_max: latitude_range[1],
+  duration_min: duration_range[0],
+  duration_max: duration_range[1],
+  season_statement: generateSeasonCondition(season)
+}).replace(/^/gm, '  ');
+
+
+// create r and python code snippets with sql query
+r_snippet = () => fillTemplate(r_template, { query: sql_query });
+py_snippet = () => fillTemplate(py_template.trim(), { query: sql_query });
+```
+
+
+{{< include components/_modal.qmd >}}
+:::
+:::
 ::::
 
 :::: {.panel-center}
@@ -173,10 +173,10 @@ download_button = {
 ```{ojs data-filtered}
 // filtered segments
 sf = s.filter(d => season.some(se => d.season.includes(se))) // by season
-      .filter(d => d.longitude_min <= longitude_range[1] & // by longitude
-                   d.longitude_max >= longitude_range[0])
-      .filter(d => d.latitude_min <= latitude_range[1] & // by latitude
-                   d.latitude_max >= latitude_range[0])
+      .filter(d => d.longitude_min >= longitude_range[0] & // by longitude
+                   d.longitude_max <= longitude_range[1])
+      .filter(d => d.latitude_min >= latitude_range[0] & // by latitude
+                   d.latitude_max <= latitude_range[1])
       .filter(d => d.duration >= duration_range[0] & // by duration
                    d.duration <= duration_range[1])
 
@@ -190,8 +190,8 @@ df = d.filter(d => sf_id.includes(d.segment_id))
 ```{ojs globe}
 // topoJSON objects for map features
 // https://github.com/martynafford/natural-earth-geojson/tree/master/110m/physical
-land = FileAttachment("topo/ne_110m_land.json").json()
-ocean = FileAttachment("topo/ne_110m_ocean.json").json()
+land = FileAttachment("resources/topo/ne_110m_land.json").json()
+ocean = FileAttachment("resources/topo/ne_110m_ocean.json").json()
 
 // fill colors for land and ocean on maps
 land_color = "wheat"
@@ -269,7 +269,6 @@ viewof download_button_segment = {
 }
 
 d_found ? html`<div class="segment-buttons">${viewof ds} ${viewof download_button_segment}</div>` : html`<div></div>`
-//d_found ? html`${viewof download_button_segment}` : html`<div></div>`
 ```
 
 ```{ojs segments-maps}

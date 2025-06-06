@@ -1,0 +1,20 @@
+```{r load-data}
+workflow <- redivis::redivis$user("mikabr")$workflow("project_loon")
+
+# segments data downsampled
+downsample <- workflow$table("downsample_x10_output")$to_tibble() |>
+# downsample <- workflow$table("downsample_x100_output")$to_tibble() |>
+  dplyr::relocate(segment_id, .after = flight_id)
+
+# by-segment summary
+segments <- workflow$table("segments")$to_tibble()
+
+segments_coded <- segments |>
+  tidyr::nest(season = c(fall, spring, summer, winter)) |>
+  dplyr::rowwise() |>
+  dplyr::mutate(season = season |> as.list() |> keep(identity) |> names() |> list())
+
+# pass data and metadata to OJS
+ojs_define(data = downsample)
+ojs_define(segments = segments_coded)
+```
