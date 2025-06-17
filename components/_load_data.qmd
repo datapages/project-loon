@@ -1,5 +1,5 @@
 ```{r load-data}
-workflow <- redivis::redivis$user("mikabr")$workflow("project_loon")
+workflow <- redivis::redivis$user("briangre")$workflow("project_loon")
 
 # segments data downsampled
 downsample <- workflow$table("downsample_x10_output")$to_tibble() |>
