@@ -1,4 +1,4 @@
-SELECT loon_coded.*
+SELECT loon.*
 FROM loon_coded AS loon
 INNER JOIN segments ON loon.segment_id = segments.segment_id
 WHERE
@@ -13,3 +13,4 @@ WHERE
       {{season_statement}}
     )
   )
+LIMIT 100  -- remove limit as needed
