@@ -133,15 +133,15 @@ ul.task-list li input[type="checkbox"] {
 <h2 data-anchor-id="project-loon">Project Loon</h2>
 <section id="abstract" class="level3">
 <h3 data-anchor-id="abstract">Abstract</h3>
-<p>The purpose of this dataset is to offer an estimate of the horizontal momentum fluxed vertically by the atmospheric internal gravity waves (GWs) observed by Project Loon balloons. This vertical flux of horizontal momentum is commonly referred to as the GW momentum flux. Before estimating the GW momentum fluxes, additional processing was necessary to remove data sampling errors, irregularities, and balloon maneuvering.</p>
+<p>The purpose of this dataset is to offer an estimate of the vertical flux of horizontal momentum by the atmospheric internal gravity waves (GWs) observed by Project Loon balloons. These waves are commonly too small in scale to be resolved in models of the atmosphere, and yet they play an important role in the atmosphere’s circulation and variability. Their momentum flux, converted to a drag on the background wind when they dissipate, is one aspect of their influence. To better understand the waves and their forcing on the atmosphere, and to provide observational constraints for parameterizations that mimic their effects in models, Green et al.&nbsp;(2024, cited below) estimated the GW momentum flux from Project Loon data.</p>
 </section>
 <section id="methodology" class="level3">
 <h3 data-anchor-id="methodology">Methodology</h3>
-<p>The procedures for this processing, and the subsequent analysis of the processed data, are described in Green et al.&nbsp;(2024). The Python code (in Jupyter notebooks) that was used for both is available at: <a href="https://github.com/DataWaveProject/Loon-momentum-fluxes" class="uri">https://github.com/DataWaveProject/Loon-momentum-fluxes</a>.</p>
+<p>Before estimating the momentum fluxes, additional processing was necessary to remove data sampling errors, irregularities, and balloon maneuvering. The balloons’ time series data were analyzed using a Morlet continuous wavelet transform, and the momentum flux time series are the wavelet cross-spectra integrated over the GW frequency range. For more details on the data processing, wavelet analysis, and an analysis of the momentum fluxes, please see Green et al.&nbsp;(2024). The Python code (in Jupyter notebooks) that was used for all three is available at: <a href="https://github.com/DataWaveProject/Loon-momentum-fluxes" class="uri">https://github.com/DataWaveProject/Loon-momentum-fluxes</a>.</p>
 </section>
-<section id="usage-notes" class="level3">
-<h3 data-anchor-id="usage-notes">Usage notes</h3>
-<p>See the following sample project for examples: <a href="https://redivis.com/projects/q08b-889vc3xgg" class="uri">https://redivis.com/projects/q08b-889vc3xgg</a>.</p>
+<section id="a-sample-redivis-project" class="level3">
+<h3 data-anchor-id="a-sample-redivis-project">A sample Redivis project</h3>
+<p>A workflow that loads the dataset and reproduces Figure 1 of Green et al.&nbsp;(2024) can be found at: <a href="https://redivis.com/projects/q08b-889vc3xgg" class="uri">https://redivis.com/projects/q08b-889vc3xgg</a>.</p>
 
 
 </section>
