@@ -29,12 +29,12 @@ citation:
 
 ### Abstract
 
-The purpose of this dataset is to offer an estimate of the horizontal momentum fluxed vertically by the atmospheric internal gravity waves (GWs) observed by Project Loon balloons. This vertical flux of horizontal momentum is commonly referred to as the GW momentum flux. Before estimating the GW momentum fluxes, additional processing was necessary to remove data sampling errors, irregularities, and balloon maneuvering.
+The purpose of this dataset is to offer an estimate of the vertical flux of horizontal momentum by the atmospheric internal gravity waves (GWs) observed by Project Loon balloons. These waves are commonly too small in scale to be resolved in models of the atmosphere, and yet they play an important role in the atmosphere's circulation and variability. Their momentum flux, converted to a drag on the background wind when they dissipate, is one aspect of their influence. To better understand the waves and their forcing on the atmosphere, and to provide observational constraints for parameterizations that mimic their effects in models, Green et al. (2024, cited below) estimated the GW momentum flux from Project Loon data.
 
 ### Methodology
 
-The procedures for this processing, and the subsequent analysis of the processed data, are described in Green et al. (2024). The Python code (in Jupyter notebooks) that was used for both is available at: <https://github.com/DataWaveProject/Loon-momentum-fluxes>.
+Before estimating the momentum fluxes, additional processing was necessary to remove data sampling errors, irregularities, and balloon maneuvering. The balloons' time series data were analyzed using a Morlet continuous wavelet transform, and the momentum flux time series are the wavelet cross-spectra integrated over the GW frequency range. For more details on the data processing, wavelet analysis, and an analysis of the momentum fluxes, please see Green et al. (2024). The Python code (in Jupyter notebooks) that was used for all three is available at: <https://github.com/DataWaveProject/Loon-momentum-fluxes>.
 
-### Usage notes
+### A sample Redivis project
 
-See the following sample project for examples: <https://redivis.com/projects/q08b-889vc3xgg>.
+A workflow that loads the dataset and reproduces Figure 1 of Green et al. (2024) can be found at: <https://redivis.com/projects/q08b-889vc3xgg>.

@@ -4,11 +4,11 @@
 ::: {.blurb}
 # Project Loon
 
-Welcome to the Datapages site for Project Loon data! Loon balloons were what is referred to as "superpressure" balloons: the pressure inside their envelopes was larger than the ambient pressure, so they drifted approximately on surfaces of constant density. In this dataset, there are 385 balloon flights, split into 938 data segments, all at least two days long and corresponding to intervals when the balloons were passively drifting in the lower stratosphere. For more details on the dataset, please see the About tab. The full dataset can be downloaded from the Data tab, and the Analysis tab offers other data access and analysis tools.
+Welcome to the Datapages site for Project Loon data! Loon balloons were "superpressure" balloons: the pressure inside their envelopes was larger than the ambient pressure, so they drifted on surfaces of constant density. In this dataset, there are 385 balloon flights, split into 938 data segments, all at least two days long and corresponding to intervals when the balloons were passively drifting in the lower stratosphere. For more details on the dataset, please see the About tab. The full dataset on Redivis can be accessed from the Data tab, and the Analysis tab offers tools to access the dataset using R or Python.
 
-On this page, we offer several tools to select, visualize, and download data from individual balloons and groups of balloons. Immediately below you will find a tool that allows you to select and plot the trajectories of a subset of data segments, based on the time of year the data were collected and where the balloons flew. You can download a downsampled (10x, or one data point every 20 minutes) version of the dataset that includes just the selected segments, or generate a code snippet in R or Python that downloads the full dataset for those segments.
+On this page, we offer several tools to select, visualize, and download data from individual balloons and groups of balloons. Immediately below you will find a tool that allows you to select and plot the trajectories of a subset of data segments based on the time of year the data were collected and where the balloons flew. You can download a downsampled (10x, or one data point every 20 minutes) version of the dataset that includes just the selected segments, or generate a code snippet in R or Python that loads the complete dataset for those segments. To avoid accidentally accessing unnecessarily large quantities of data, the code snippet only loads 100 rows of data by default; to load all the selected data, comment out the "LIMIT 100" line.
 
-Below that we offer an additional set of plotting tools for individual data segments, drawn from the subset of segments selected earlier. Time series of the balloon's altitude, horizontal velocities, and analyzed gravity wave momentum flux are plotted from the downsampled data, which are shown in a table at the bottom. There is an option to download the segment's complete data.
+Below that we offer an additional set of plotting tools for individual data segments, drawn from the subset of segments selected earlier. Time series of the balloon's altitude, horizontal velocities, and analyzed gravity wave momentum flux are plotted from the downsampled data, which are shown in a table at the bottom. There is an option to download the segment's complete data. After clicking the "Download segment" button and logging in to Redivis, please wait a couple seconds for the data to be prepared for download.
 :::
 :::
 
@@ -53,7 +53,7 @@ d = transpose(data).map(d => ({ ...d, time: new Date(d.time) }))
 
 :::: {.panel-sidebar}
 
-_Use these filters to narrow down the list of segments, and then select an individual segment from this list below to visualize its trajectory and telemetry._
+_Use these filters to narrow down the list of segments, and then select an individual segment from this list below to visualize its trajectory and telemetry. The cursor hover text is the segment ID._
 
 ::: {.side-inputs}
 
