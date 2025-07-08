@@ -23,15 +23,6 @@ citation:
     - François Lott
   container-title: "Journal of Geophysical Research: Atmospheres"
   doi: 10.1029/2023JD039927
-
-  type: article-journal
-  title: Loon stratospheric sensor data (Version 3)
-  issued: 2021
-  author:
-    - Bradley Rhodes
-    - Salvatore Candido
-  container-title: "Zenodo"
-  doi: 10.5281/zenodo.5119968
 ---
 
 ## Project Loon
@@ -42,7 +33,7 @@ The purpose of this dataset is to offer an estimate of the vertical flux of hori
 
 ### Methodology
 
-Before estimating the momentum fluxes, additional processing was necessary to remove data sampling errors, irregularities, and balloon maneuvering. The balloons' time series data were analyzed using a Morlet continuous wavelet transform, and the momentum flux time series are the wavelet cross-spectra integrated over the GW frequency range. For more details on the data processing, wavelet analysis, and an analysis of the momentum fluxes, please see Green et al. (2024). The Python code (in Jupyter notebooks) that was used for all three is available at: <https://github.com/DataWaveProject/Loon-momentum-fluxes>. The unprocessed Loon data are available on Zenodo (Rhodes and Candido, 2021; cited below).
+Before estimating the momentum fluxes, additional processing was necessary to remove data sampling errors, irregularities, and balloon maneuvering. The balloons' time series data were analyzed using a Morlet continuous wavelet transform, and the momentum flux time series are the wavelet cross-spectra integrated over the GW frequency range. For more details on the data processing, wavelet analysis, and an analysis of the momentum fluxes, please see Green et al. (2024). The Python code (in Jupyter notebooks) that was used for all three is available at: <https://github.com/DataWaveProject/Loon-momentum-fluxes>. The unprocessed Loon data are available on Zenodo: <https://zenodo.org/records/5119968>.
 
 ### A sample Redivis project
 
