@@ -24,7 +24,6 @@ citation:
   container-title: "Journal of Geophysical Research: Atmospheres"
   doi: 10.1029/2023JD039927
 
-citation:
   type: article-journal
   title: Loon stratospheric sensor data (Version 3)
   issued: 2021
