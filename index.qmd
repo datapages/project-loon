@@ -23,6 +23,7 @@ Below that we offer an additional set of plotting tools for individual data segm
 
 -----
 
+## Segment selection
 
 {{< include components/_load_data.qmd >}}
 
@@ -233,6 +234,8 @@ viewof latitude = Inputs.range([-90, 90], {label: "Latitude", step: 1, value: 0}
 ::::
 
 -----
+
+## Individual segment trajectory
 
 ::: {layout="[[1], [0.5,1]]"}
 
