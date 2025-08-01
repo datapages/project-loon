@@ -6,9 +6,9 @@ $primary: #014240;
 
 /*-- scss:rules --*/
 
-.blurb {
-  font-size: 120%;
-}
+//.blurb {
+//  font-size: 120%;
+//}
 
 .label:has(+ .form) {
   flex-shrink: unset !important;
