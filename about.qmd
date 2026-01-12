@@ -1,7 +1,7 @@
 ---
 about:
   template: trestles
-  image: images/unique_flights_map.jpg
+  image: images/combined_image.jpg
   image-width: 100%
   links:
     - icon: github
