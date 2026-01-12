@@ -6,7 +6,7 @@ website:
   page-footer:
     background: light
     left: |
-      Made with [datapages](https://datapages.github.io) using [Quarto](https://quarto.org/) and [Observable](https://observablehq.com/).
+      Made with [datapages](https://datapages.github.io) using [Quarto](https://quarto.org/) and [Observable](https://observablehq.com/), with support from the National Science Foundation.
     center: ""
     right: 
       - icon: github
