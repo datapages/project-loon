@@ -6,8 +6,7 @@ website:
   page-footer:
     background: light
     left: |
-      Made with [datapages](https://datapages.github.io) using [Quarto](https://quarto.org/) and [Observable](https://observablehq.com/), with support from the National Science Foundation.
-    center: ""
+      Made with [datapages](https://datapages.github.io) using [Quarto](https://quarto.org/) and [Observable](https://observablehq.com/).
     right: 
       - icon: github
         href: https://github.com/datapages/project-loon
