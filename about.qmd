@@ -3,6 +3,7 @@ about:
   template: trestles
   image: images/combined_image.jpg
   image-width: 100%
+  image-alt: Supported by the NSF CISE/OAC program
   links:
     - icon: github
       text: GitHub
