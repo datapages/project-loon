@@ -1,9 +1,9 @@
 ---
+subtitle: Supported by the NSF CISE/OAC program
 about:
   template: trestles
   image: images/combined_image.jpg
   image-width: 100%
-  ![Supported by the NSF CISE/OAC program](images/combined_image.jpg)
   links:
     - icon: github
       text: GitHub
