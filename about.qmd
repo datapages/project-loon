@@ -3,6 +3,7 @@ about:
   template: trestles
   image: images/combined_image.jpg
   image-width: 100%
+  ![Supported by the NSF CISE/OAC program](images/combined_image.jpg)
   links:
     - icon: github
       text: GitHub
@@ -38,5 +39,3 @@ Before estimating the momentum fluxes, additional processing was necessary to re
 ### A sample Redivis project
 
 A workflow that loads the dataset and reproduces Figure 1 of Green et al. (2024) can be found at: <https://redivis.com/projects/q08b-889vc3xgg>.
-
-![Supported by the NSF CISE/OAC program](images/combined_image.jpg)
